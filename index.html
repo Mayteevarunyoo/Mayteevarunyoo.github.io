@@ -269,6 +269,7 @@
     flex: 1;
     width: 100%;
     border: none;
+    overflow: auto;
   }
 
   .sub-arrow {
@@ -387,7 +388,7 @@
         </div>
 
         <!-- 4.2 -->
-        <div class="nav-child has-sub" onclick="toggleSub('sub-42', this); loadPdf(this, 'https://drive.google.com/file/d/1OVGOQOyfzRutqcPib1rSKY-BoaNOEiSH/view', 'วาระ 4.2 — ขอตำแหน่ง รศ. ของ ผศ.ดร.ปณัฐพงศ์ บุญนวล')">
+        <div class="nav-child has-sub" onclick="toggleSub('sub-42', this); loadPdf(this, 'https://drive.google.com/file/d/1OVGOQOyfzRutqcPib1rSKY-BoaNOEiSH/preview?usp=sharing', 'วาระ 4.2 — ขอตำแหน่ง รศ. ของ ผศ.ดร.ปณัฐพงศ์ บุญนวล')">
           <div class="nav-child-dot"></div>
           <span class="nav-child-text">4.2 ขอตำแหน่ง รศ. ของ ผศ.ดร.ปณัฐพงศ์ บุญนวล</span>
           <span class="sub-arrow">▶</span>
@@ -446,7 +447,7 @@
       <span class="pdf-toolbar-title" id="pdf-title"></span>
       <span class="pdf-toolbar-badge">เอกสารประกอบการประชุม</span>
     </div>
-    <iframe id="pdf-viewer" style="display:none;"></iframe>
+    <iframe id="pdf-viewer" scrolling="yes" style="display:none;"></iframe>
     <div class="pdf-placeholder" id="pdf-placeholder">
       <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
