@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วาระการประชุมคณะกรรมการวิชาการ ครั้งที่ 1/2569</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --orange: #b03a2e;
+    --orange-dark: #8b2e24;
+    --orange-light: #fdf1ef;
+    --orange-mid: #f5c9c4;
+    --text-main: #2c2c2a;
+    --text-muted: #888780;
+    --text-light: #5f5e5a;
+    --border: #e0ddd4;
+    --bg-page: #f5f4f0;
+    --bg-white: #fff;
+    --bg-soft: #faf9f6;
+    --sidebar-width: 300px;
+  }
+
+  body {
+    font-family: 'Sarabun', sans-serif;
+    background: var(--bg-page);
+    color: var(--text-main);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ─── Topbar ─── */
+  .topbar {
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    z-index: 100;
+  }
+
+  .topbar-title { font-size: 14px; font-weight: 600; color: var(--orange); }
+  .topbar-sub { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+
+  /* ─── Main layout ─── */
+  .layout {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* ─── Sidebar ─── */
+  .sidebar {
+    width: var(--sidebar-width);
+    min-width: var(--sidebar-width);
+    background: var(--orange-dark);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    flex-shrink: 0;
+  }
+
+  .sidebar-header {
+    padding: 0;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+  }
+
+  .sidebar-banner {
+    background: #e67e22;
+    padding: 16px 20px;
+    text-align: center;
+  }
+
+  .sidebar-banner .date {
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+
+  .sidebar-banner h1 {
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.6;
+    color: #fff;
+  }
+
+  .sidebar-banner .room {
+    font-size: 11px;
+    color: rgba(255,255,255,0.85);
+    margin-top: 6px;
+    background: rgba(0,0,0,0.15);
+    border-radius: 20px;
+    padding: 2px 10px;
+    display: inline-block;
+  }
+
+  .sidebar-info {
+    padding: 10px 20px;
+    background: rgba(0,0,0,0.12);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    text-align: center;
+  }
+
+  .sidebar-info .faculty {
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+  }
+
+  /* ─── Nav items ─── */
+  .nav-section { padding: 8px 0; }
+
+  .nav-section-label {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.35);
+    text-transform: uppercase;
+    padding: 8px 16px 6px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 9px 16px;
+    cursor: pointer;
+    transition: background 0.15s;
+    border-left: 3px solid transparent;
+    text-decoration: none;
+    color: inherit;
+    user-select: none;
+  }
+
+  .nav-item:hover { background: rgba(255,255,255,0.08); }
+
+  .nav-item.active {
+    background: #e67e22;
+    border-left-color: #fff;
+  }
+
+  .nav-item.active .nav-num { color: #fff; }
+  .nav-item.active .nav-text { color: #fff; font-weight: 700; }
+  .nav-item.active .nav-arrow { color: #fff; }
+
+  .nav-num {
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.4);
+    min-width: 26px;
+    padding-top: 1px;
+    flex-shrink: 0;
+  }
+
+  .nav-item.active .nav-num { color: rgba(255,255,255,0.9); }
+
+  .nav-text {
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: rgba(255,255,255,0.72);
+    flex: 1;
+  }
+
+  .nav-item.active .nav-text { color: #fff; font-weight: 500; }
+
+  .nav-arrow {
+    font-size: 10px;
+    color: rgba(255,255,255,0.35);
+    padding-top: 3px;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+
+  .nav-item.expanded .nav-arrow { transform: rotate(90deg); }
+
+  /* ─── Sub nav ─── */
+  .nav-children {
+    display: none;
+    background: rgba(0,0,0,0.12);
+  }
+
+  .nav-children.open { display: block; }
+
+  .nav-child {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 8px 16px 8px 32px;
+    cursor: pointer;
+    transition: background 0.15s;
+    border-left: 3px solid transparent;
+    text-decoration: none;
+    color: inherit;
+    user-select: none;
+  }
+
+  .nav-child:hover { background: rgba(255,255,255,0.07); }
+
+  .nav-child.active {
+    background: #e67e22;
+    border-left-color: #fff;
+  }
+
+  .nav-child.active .nav-child-dot { background: #fff; }
+  .nav-child.active .nav-child-text { color: #fff; font-weight: 600; }
+
+  .nav-child-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+
+  .nav-child.active .nav-child-dot { background: #fff; }
+
+  .nav-child-text {
+    font-size: 12px;
+    line-height: 1.5;
+    color: rgba(255,255,255,0.6);
+  }
+
+  .nav-child.active .nav-child-text { color: #fff; }
+
+  /* ─── PDF Frame ─── */
+  .pdf-frame {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: #525659;
+  }
+
+  .pdf-toolbar {
+    background: #3c3f41;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #222;
+  }
+
+  .pdf-toolbar-title {
+    font-size: 12px;
+    color: rgba(255,255,255,0.75);
+    flex: 1;
+  }
+
+  .pdf-toolbar-badge {
+    font-size: 11px;
+    background: var(--orange);
+    color: #fff;
+    padding: 2px 10px;
+    border-radius: 20px;
+  }
+
+  iframe#pdf-viewer {
+    flex: 1;
+    width: 100%;
+    border: none;
+  }
+
+  .sub-arrow {
+    font-size: 9px;
+    color: rgba(255,255,255,0.3);
+    margin-left: auto;
+    padding-left: 4px;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+
+  .nav-child.sub-expanded .sub-arrow { transform: rotate(90deg); }
+
+  .nav-sub-children { display: none; background: rgba(0,0,0,0.15); }
+  .nav-sub-children.open { display: block; }
+
+  .nav-sub-child {
+    padding: 7px 16px 7px 52px;
+    font-size: 11.5px;
+    color: rgba(255,255,255,0.55);
+    cursor: pointer;
+    transition: background 0.15s;
+    border-left: 3px solid transparent;
+  }
+
+  .nav-sub-child:hover { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.8); }
+
+  .nav-sub-child.active {
+    background: #e67e22;
+    border-left-color: #fff;
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .pdf-placeholder {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.35);
+    gap: 12px;
+  }
+
+  .pdf-placeholder svg {
+    width: 48px;
+    height: 48px;
+    opacity: 0.3;
+  }
+
+  .pdf-placeholder p { font-size: 13px; }
+</style>
+</head>
+<body>
+
+<!-- Topbar -->
+<div class="topbar">
+  <div>
+    <div class="topbar-title">คณะกรรมการวิชาการ คณะวิศวกรรมศาสตร์</div>
+    <div class="topbar-sub">ครั้งที่ 1/2569 · วันอังคารที่ 9 มิถุนายน 2569 · ห้องประชุม CE 230</div>
+  </div>
+</div>
+
+<div class="layout">
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-banner">
+        <div class="date">วันอังคารที่ 9 มิถุนายน พ.ศ. 2569</div>
+        <h1>ประชุมคณะกรรมการวิชาการ<br>คณะวิศวกรรมศาสตร์ ครั้งที่ 1/2569</h1>
+        <div class="room">(ห้องประชุม CE 230 อาคารวิศวกรรมโยธา)</div>
+      </div>
+      <div class="sidebar-info">
+        <div class="faculty">คณะวิศวกรรมศาสตร์ มหาวิทยาลัยนเรศวร</div>
+      </div>
+    </div>
+
+    <div class="nav-section">
+
+
+      <!-- วาระ 1 -->
+      <div class="nav-item" onclick="loadPdf(this, 'https://drive.google.com/file/d/1HLHx71vnBjdgUslYj-NTiFM_VDB1btR8/preview', 'วาระที่ 1: เรื่องที่แจ้งเพื่อทราบ')">
+        <span class="nav-text">วาระที่ 1: เรื่องที่แจ้งเพื่อทราบ</span>
+      </div>
+
+      <!-- วาระ 2 -->
+      <div class="nav-item" onclick="loadPdf(this, 'https://drive.google.com/file/d/1v7zffhNt5QDtWk-kTUBfek7ke4yS-fC2/preview', 'วาระที่ 2: รับรองรายงานการประชุม')">
+        <span class="nav-text">วาระที่ 2: รับรองรายงานการประชุม</span>
+      </div>
+
+      <!-- วาระ 3 -->
+      <div class="nav-item" onclick="loadPdf(this, 'https://drive.google.com/file/d/1tpsaBAeMCp3isfnFrLFo8aT9Pz6a3mJH/preview', 'วาระที่ 3: เรื่องสืบเนื่อง')">
+        <span class="nav-text">วาระที่ 3: เรื่องสืบเนื่อง</span>
+      </div>
+
+      <!-- วาระ 4 -->
+      <div class="nav-item expanded" onclick="toggleChildren('children-4', this)">
+        <span class="nav-text">วาระที่ 4: เรื่องเสนอเพื่อพิจารณา</span>
+        <span class="nav-arrow">▶</span>
+      </div>
+      <div class="nav-children open" id="children-4">
+
+        <!-- 4.1 -->
+        <div class="nav-child has-sub" onclick="toggleSub('sub-41', this); loadPdf(this, 'https://drive.google.com/file/d/1XNkrjO7_mDo7pNp8_N2UMFlxbAWRlurN/preview', 'วาระ 4.1 — ขอตำแหน่ง ผศ. ดร.สุรัตน์ ปัญญาแก้ว')">
+          <div class="nav-child-dot"></div>
+          <span class="nav-child-text">4.1 ขอตำแหน่ง ผศ. ของ ดร.สุรัตน์ ปัญญาแก้ว</span>
+          <span class="sub-arrow">▶</span>
+        </div>
+        <div class="nav-sub-children" id="sub-41">
+          <div class="nav-sub-child" onclick="loadPdf(this, 'https://drive.google.com/file/d/1ZJ-Rrz1WgEUUEhQ9W42Y2lwlTl8Jv_Hd/preview', 'วาระ 4.1 — ก.พ.อ. 03')">ก.พ.อ. 03</div>
+          <div class="nav-sub-child" onclick="loadPdf(this, 'https://drive.google.com/file/d/1U1b-psYRULNTbaRNvFmNX2qKUtdwcCRZ/preview', 'วาระ 4.1 — Thesis')">Thesis</div>
+          <div class="nav-sub-child" onclick="loadPdf(this, 'https://drive.google.com/file/d/1lyrvuEb_hE8c8sqVgL-fYGE6GAGF4swU/preview', 'วาระ 4.1 — ผลประเมินการสอนและเอกสารประกอบการสอน')">ผลประเมินการสอนและเอกสารประกอบการสอน</div>
+          <div class="nav-sub-child" onclick="loadPdf(this, 'https://drive.google.com/file/d/1vJz0Q-XH9q90GVwC_Gzggpk34TZ2fD2O/preview', 'วาระ 4.1 — ผลงานวิจัยชิ้นที่ 1')">ผลงานวิจัยชิ้นที่ 1</div>
+          <div class="nav-sub-child" onclick="loadPdf(this, 'https://drive.google.com/file/d/1hh_Vvo8oLMbF_lj4-cMJCQC4YUrH4Z0R/preview', 'วาระ 4.1 — ผลงานวิจัยชิ้นที่ 2')">ผลงานวิจัยชิ้นที่ 2</div>
+        </div>
+
+        <!-- 4.2 -->
+        <div class="nav-child has-sub" onclick="toggleSub('sub-42', this); loadPdf(this, 'https://drive.google.com/file/d/1OVGOQOyfzRutqcPib1rSKY-BoaNOEiSH/preview', 'วาระ 4.2 — ขอตำแหน่ง รศ. ของ ผศ.ดร.ปณัฐพงศ์ บุญนวล')">
+          <div class="nav-child-dot"></div>
+          <span class="nav-child-text">4.2 ขอตำแหน่ง รศ. ของ ผศ.ดร.ปณัฐพงศ์ บุญนวล</span>
+          <span class="sub-arrow">▶</span>
+        </div>
+        <div class="nav-sub-children" id="sub-42">
+          <div class="nav-sub-child" onclick="loadPdf(this, 'https://drive.google.com/file/d/1lWnNbFBKIbk1AEnBcX9Ml5r-6mn7uX50/preview', 'วาระ 4.2 — ก.พ.อ. 03')">ก.พ.อ. 03</div>
+          <div class="nav-sub-child" onclick="loadPdf(this, 'https://drive.google.com/file/d/1caxjLFjpHqa98FJnbkO1VcafKlWnilHb/preview', 'วาระ 4.2 — Thesis')">Thesis</div>
+          <div class="nav-sub-child" onclick="loadPdf(this, 'https://drive.google.com/file/d/18wN8yWe8MZ37cEniG-qJgTSIHLfK0ma1/preview', 'วาระ 4.2 — ผลประเมินการสอนและเอกสารประกอบการสอน')">ผลประเมินการสอนและเอกสารประกอบการสอน</div>
+          <div class="nav-sub-child" onclick="loadPdf(this, 'https://drive.google.com/file/d/1pghKjtDRo5oNMmT0wVvewgvEY9nrDATc/preview', 'วาระ 4.2 — ผลงานวิจัยชิ้นที่ 1')">ผลงานวิจัยชิ้นที่ 1</div>
+          <div class="nav-sub-child" onclick="loadPdf(this, 'https://drive.google.com/file/d/1pG9GG2-Zj5cK2mChUiHqe5ECRYrySBPc/preview', 'วาระ 4.2 — ผลงานวิจัยชิ้นที่ 2')">ผลงานวิจัยชิ้นที่ 2</div>
+          <div class="nav-sub-child" onclick="loadPdf(this, 'https://drive.google.com/file/d/1_fv2xU4PocrlqL7bMcietFyOvfzqow0n/preview', 'วาระ 4.2 — ผลงานวิจัยชิ้นที่ 3')">ผลงานวิจัยชิ้นที่ 3</div>
+          <div class="nav-sub-child" onclick="loadPdf(this, 'https://drive.google.com/file/d/1BJmeyC-P6sTQzERy-oVPXaXyZ_wMgMuT/preview', 'วาระ 4.2 — ผลงานวิจัยชิ้นที่ 4')">ผลงานวิจัยชิ้นที่ 4</div>
+          <div class="nav-sub-child" onclick="loadPdf(this, 'https://drive.google.com/file/d/1jZ_m4my9hymKAbo8cd0exVmCfgSF8Sxv/preview', 'วาระ 4.2 — ผลงานวิจัยชิ้นที่ 5')">ผลงานวิจัยชิ้นที่ 5</div>
+          <div class="nav-sub-child" onclick="loadPdf(this, 'https://drive.google.com/file/d/19-oOGKvtdELdQ_q9nK4C1m6GpJkFKiuF/preview', 'วาระ 4.2 — ผลงานวิจัยชิ้นที่ 6')">ผลงานวิจัยชิ้นที่ 6</div>
+          <div class="nav-sub-child" onclick="loadPdf(this, 'https://drive.google.com/file/d/1EkFYug4hp7hl8p26Lou1WkeFdE5-XVQ9/preview', 'วาระ 4.2 — ผลงานวิจัยชิ้นที่ 7')">ผลงานวิจัยชิ้นที่ 7</div>
+          <div class="nav-sub-child" onclick="loadPdf(this, 'https://drive.google.com/file/d/1huPhxH6I4q2JHkHqt0oXALqgs0KVVQDn/preview', 'วาระ 4.2 — ผลงานวิจัยชิ้นที่ 8')">ผลงานวิจัยชิ้นที่ 8</div>
+        </div>
+
+        <!-- 4.3 -->
+        <div class="nav-child" onclick="loadPdf(this, 'https://drive.google.com/file/d/17ICW5xLZzSo071mcTz_WMLt1aFv8TDwh/preview', 'วาระ 4.3 — เปิดรายวิชา AI เบื้องต้น')">
+          <div class="nav-child-dot"></div>
+          <span class="nav-child-text">4.3 เปิดรายวิชา AI เบื้องต้น (GE บังคับ)</span>
+        </div>
+
+        <!-- 4.4 -->
+        <div class="nav-child" onclick="loadPdf(this, 'https://drive.google.com/file/d/1nDSOl_YzfGOcDtek9JNronWzCNTwx2d1/preview', 'วาระ 4.4 — เปิดรายวิชา A.I. in Everyday Life')">
+          <div class="nav-child-dot"></div>
+          <span class="nav-child-text">4.4 เปิดรายวิชา A.I. in Everyday Life</span>
+        </div>
+
+        <!-- 4.5 -->
+        <div class="nav-child" onclick="loadPdf(this, 'https://drive.google.com/file/d/1yavz2H6eE9UiOvc4d3SsGmM3-jVPjssc/preview', 'วาระ 4.5 — จัดการเรียนการสอนวิชา Statistics')">
+          <div class="nav-child-dot"></div>
+          <span class="nav-child-text">4.5 จัดการเรียนการสอนวิชา Statistics</span>
+        </div>
+
+        <!-- 4.6 -->
+        <div class="nav-child" onclick="loadPdf(this, 'https://drive.google.com/file/d/1xuSqMZK0ctjbqtnBqPIHqzO4rgCf3e8h/preview', 'วาระ 4.6 — รายวิชาพื้นฐานทางวิศวกรรม')">
+          <div class="nav-child-dot"></div>
+          <span class="nav-child-text">4.6 รายวิชาพื้นฐานทางวิศวกรรม (รายวิชากลาง)</span>
+        </div>
+
+      </div>
+
+      <!-- วาระ 5 -->
+      <div class="nav-item" onclick="loadPdf(this, 'https://drive.google.com/file/d/1lv8gYaegw1KObXaU34Qc8bHm3uiXoWdl/preview', 'วาระที่ 5: วาระอื่น ๆ')">
+        <span class="nav-text">วาระที่ 5: วาระอื่น ๆ</span>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- PDF Frame -->
+  <div class="pdf-frame" id="pdf-frame">
+    <div class="pdf-toolbar" id="pdf-toolbar" style="display:none;">
+      <span class="pdf-toolbar-title" id="pdf-title"></span>
+      <span class="pdf-toolbar-badge">เอกสารประกอบการประชุม</span>
+    </div>
+    <iframe id="pdf-viewer" style="display:none;"></iframe>
+    <div class="pdf-placeholder" id="pdf-placeholder">
+      <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="9" y1="13" x2="15" y2="13"/>
+        <line x1="9" y1="17" x2="15" y2="17"/>
+      </svg>
+      <p>เลือกวาระหรือเอกสารจากเมนูด้านซ้าย</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function loadPdf(el, url, title) {
+  document.querySelectorAll('.nav-item, .nav-child, .nav-sub-child').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+
+  const viewer = document.getElementById('pdf-viewer');
+  const placeholder = document.getElementById('pdf-placeholder');
+  const toolbar = document.getElementById('pdf-toolbar');
+  const titleEl = document.getElementById('pdf-title');
+
+  if (!url || url.startsWith('LINK_')) {
+    viewer.style.display = 'none';
+    toolbar.style.display = 'none';
+    placeholder.style.display = 'flex';
+    return;
+  }
+
+  titleEl.textContent = title;
+  toolbar.style.display = 'flex';
+  placeholder.style.display = 'none';
+  viewer.style.display = 'block';
+  viewer.src = url;
+}
+
+function toggleChildren(id, el) {
+  const children = document.getElementById(id);
+  const isOpen = children.classList.contains('open');
+  children.classList.toggle('open', !isOpen);
+  el.classList.toggle('expanded', !isOpen);
+}
+
+function toggleSub(id, el) {
+  const sub = document.getElementById(id);
+  const isOpen = sub.classList.contains('open');
+  document.querySelectorAll('.nav-sub-children').forEach(s => s.classList.remove('open'));
+  document.querySelectorAll('.nav-child').forEach(c => c.classList.remove('sub-expanded'));
+  if (!isOpen) {
+    sub.classList.add('open');
+    el.classList.add('sub-expanded');
+  }
+}
+</script>
+
+</body>
+</html>
