@@ -418,33 +418,41 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 28px;
-    height: 100px;
+    gap: 2px;
+    width: 26px;
+    height: 110px;
     background: #fff;
     border: 1px solid var(--border);
     border-left: none;
-    border-radius: 0 6px 6px 0;
+    border-radius: 0 8px 8px 0;
     cursor: pointer;
     box-shadow: 2px 0 6px rgba(0,0,0,0.08);
     transition: left 0.3s ease, background 0.15s;
     user-select: none;
+    padding: 8px 0;
   }
 
   .sidebar-toggle:hover { background: #fdf6f0; }
 
   .sidebar-toggle .toggle-label {
-    writing-mode: vertical-rl;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .sidebar-toggle .toggle-label span {
     font-size: 11px;
     font-weight: 700;
-    letter-spacing: 0.12em;
-    color: #888780;
-    text-transform: uppercase;
+    color: #555;
+    line-height: 1;
+    font-family: 'Sarabun', sans-serif;
   }
 
   .sidebar-toggle .toggle-arrow {
     font-size: 13px;
     color: #e67e22;
-    margin-top: 4px;
+    margin-top: 6px;
     transition: transform 0.3s;
   }
 
@@ -520,7 +528,12 @@
 
   <!-- Sidebar Toggle Button -->
   <div class="sidebar-toggle" onclick="toggleSidebar()" title="ซ่อน/แสดงเมนู">
-    <span class="toggle-label">HIDE</span>
+    <div class="toggle-label" id="toggle-label">
+      <span>H</span>
+      <span>I</span>
+      <span>D</span>
+      <span>E</span>
+    </div>
     <span class="toggle-arrow">◀</span>
   </div>
 
@@ -654,10 +667,10 @@
 // ─── Sidebar Toggle ───
 function toggleSidebar() {
   const body = document.body;
-  const btn = document.querySelector('.sidebar-toggle');
-  const label = btn.querySelector('.toggle-label');
+  const label = document.getElementById('toggle-label');
   const hidden = body.classList.toggle('sidebar-hidden');
-  label.textContent = hidden ? 'SHOW' : 'HIDE';
+  const letters = hidden ? ['S','H','O','W'] : ['H','I','D','E'];
+  label.innerHTML = letters.map(l => `<span>${l}</span>`).join('');
 }
 
 // ─── Password ───
