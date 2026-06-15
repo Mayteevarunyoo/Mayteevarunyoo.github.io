@@ -304,6 +304,166 @@
     font-weight: 600;
   }
 
+  /* ─── Password Overlay ─── */
+  #password-overlay {
+    position: fixed;
+    inset: 0;
+    background: #f5f4f0;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .pw-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.10);
+    padding: 40px 40px 36px;
+    width: 380px;
+    text-align: center;
+  }
+
+  .pw-logo {
+    background: #e67e22;
+    border-radius: 8px;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 18px;
+  }
+
+  .pw-logo svg { width: 30px; height: 30px; }
+
+  .pw-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #2c2c2a;
+    margin-bottom: 4px;
+  }
+
+  .pw-subtitle {
+    font-size: 13px;
+    color: #888780;
+    margin-bottom: 28px;
+    line-height: 1.6;
+  }
+
+  .pw-label {
+    font-size: 12px;
+    color: #888780;
+    margin-bottom: 14px;
+    letter-spacing: 0.04em;
+  }
+
+  .pw-boxes {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .pw-box {
+    width: 52px;
+    height: 58px;
+    border: 2px solid #e0ddd4;
+    border-radius: 8px;
+    font-size: 22px;
+    font-weight: 700;
+    text-align: center;
+    color: #2c2c2a;
+    background: #faf9f6;
+    outline: none;
+    transition: border-color 0.15s;
+    font-family: 'Sarabun', sans-serif;
+  }
+
+  .pw-box:focus { border-color: #e67e22; background: #fff; }
+  .pw-box.error { border-color: #e74c3c; background: #fff8f7; }
+
+  .pw-btn {
+    width: 100%;
+    padding: 12px;
+    background: #e67e22;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Sarabun', sans-serif;
+    transition: background 0.15s;
+  }
+
+  .pw-btn:hover { background: #d35400; }
+
+  .pw-error {
+    font-size: 12px;
+    color: #e74c3c;
+    margin-top: 12px;
+    min-height: 18px;
+  }
+
+  /* ─── Sidebar Toggle ─── */
+  .sidebar-toggle {
+    position: absolute;
+    left: var(--sidebar-width);
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 72px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: none;
+    border-radius: 0 6px 6px 0;
+    cursor: pointer;
+    box-shadow: 2px 0 6px rgba(0,0,0,0.08);
+    transition: left 0.3s ease, background 0.15s;
+    user-select: none;
+  }
+
+  .sidebar-toggle:hover { background: #fdf6f0; }
+
+  .sidebar-toggle .toggle-label {
+    writing-mode: vertical-rl;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: #888780;
+    text-transform: uppercase;
+  }
+
+  .sidebar-toggle .toggle-arrow {
+    font-size: 10px;
+    color: #e67e22;
+    margin-top: 4px;
+    transition: transform 0.3s;
+  }
+
+  body.sidebar-hidden .sidebar-toggle {
+    left: 0;
+  }
+
+  body.sidebar-hidden .sidebar-toggle .toggle-arrow {
+    transform: rotate(180deg);
+  }
+
+  body.sidebar-hidden .sidebar {
+    width: 0;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .layout { position: relative; }
+
   .pdf-placeholder {
     flex: 1;
     display: flex;
@@ -325,6 +485,29 @@
 </head>
 <body>
 
+<!-- Password Overlay -->
+<div id="password-overlay">
+  <div class="pw-card">
+    <div class="pw-logo">
+      <svg fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+    </div>
+    <div class="pw-title">วาระการประชุมคณะกรรมการวิชาการ</div>
+    <div class="pw-subtitle">คณะวิศวกรรมศาสตร์ มหาวิทยาลัยนเรศวร<br>ครั้งที่ 1/2569 · วันที่ 9 มิถุนายน 2569</div>
+    <div class="pw-label">กรอกรหัสเพื่อเปิดเอกสาร</div>
+    <div class="pw-boxes">
+      <input class="pw-box" id="p1" type="password" maxlength="1" inputmode="numeric" pattern="[0-9]">
+      <input class="pw-box" id="p2" type="password" maxlength="1" inputmode="numeric" pattern="[0-9]">
+      <input class="pw-box" id="p3" type="password" maxlength="1" inputmode="numeric" pattern="[0-9]">
+      <input class="pw-box" id="p4" type="password" maxlength="1" inputmode="numeric" pattern="[0-9]">
+    </div>
+    <button class="pw-btn" onclick="checkPassword()">เข้าสู่ระบบ</button>
+    <div class="pw-error" id="pw-error"></div>
+  </div>
+</div>
+
 <!-- Topbar -->
 <div class="topbar">
   <div>
@@ -334,6 +517,12 @@
 </div>
 
 <div class="layout">
+
+  <!-- Sidebar Toggle Button -->
+  <div class="sidebar-toggle" onclick="toggleSidebar()" title="ซ่อน/แสดงเมนู">
+    <span class="toggle-label">HIDE</span>
+    <span class="toggle-arrow">◀</span>
+  </div>
 
   <!-- Sidebar -->
   <nav class="sidebar">
@@ -462,6 +651,60 @@
 </div>
 
 <script>
+// ─── Sidebar Toggle ───
+function toggleSidebar() {
+  const body = document.body;
+  const btn = document.querySelector('.sidebar-toggle');
+  const label = btn.querySelector('.toggle-label');
+  const hidden = body.classList.toggle('sidebar-hidden');
+  label.textContent = hidden ? 'SHOW' : 'HIDE';
+}
+
+// ─── Password ───
+const CORRECT = '8822';
+
+const boxes = ['p1','p2','p3','p4'];
+
+boxes.forEach((id, i) => {
+  const el = document.getElementById(id);
+  el.addEventListener('input', function() {
+    this.value = this.value.replace(/[^0-9]/g, '');
+    if (this.value.length === 1 && i < 3) {
+      document.getElementById(boxes[i+1]).focus();
+    }
+    if (this.value.length === 1 && i === 3) {
+      checkPassword();
+    }
+    document.getElementById('pw-error').textContent = '';
+    boxes.forEach(b => document.getElementById(b).classList.remove('error'));
+  });
+  el.addEventListener('keydown', function(e) {
+    if (e.key === 'Backspace' && this.value === '' && i > 0) {
+      document.getElementById(boxes[i-1]).focus();
+    }
+    if (e.key === 'Enter') checkPassword();
+  });
+});
+
+function checkPassword() {
+  const entered = boxes.map(id => document.getElementById(id).value).join('');
+  if (entered === CORRECT) {
+    document.getElementById('password-overlay').style.display = 'none';
+    document.getElementById('p1').focus();
+  } else {
+    document.getElementById('pw-error').textContent = 'รหัสไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง';
+    boxes.forEach(b => {
+      const el = document.getElementById(b);
+      el.classList.add('error');
+      el.value = '';
+    });
+    document.getElementById('p1').focus();
+  }
+}
+
+window.addEventListener('load', () => document.getElementById('p1').focus());
+
+// ─── Main ───
 function loadPdf(el, url, title) {
   document.querySelectorAll('.nav-item, .nav-child, .nav-sub-child').forEach(i => i.classList.remove('active'));
   el.classList.add('active');
